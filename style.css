@@ -1,3 +1,11 @@
 #main-div {
     background-color: antiquewhite
 }
+
+#image-container {
+    background-color: rgb(224, 193, 247)
+}
+
+.image-container {
+    text-align: center;
+}
