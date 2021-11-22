@@ -1,25 +1,11 @@
 // hämtat diven #image-container. sparar den html-diven i en variabel i Js som heter imageContainerEl.
 //samma med correct name-button & false-name-button som båda ligger i varsin div i html:en. 
 let imageContainerEl = document.getElementById('image-container');
-let correctNameEl = document.getElementById('correct-name');
-let falseNameEl = document.getElementById('false-name');
+let correctNameButtonEl = document.getElementById('correct-name');
+let falseName1ButtonEl = document.getElementById('false-name-1');
 
 
-//diven som håller knapp med rätt namn. redigerar den här:
-    //lägger till button med attribut som heter name och ger det värdet av studentens namn
-    //+sätter knappens text till studentens namn också (Adi)
-correctNameEl.innerHTML = `
-<button name="${students[0].name}">${students[0].name}</button>
-`
-//skapar variabel med studentens rätta namn (Adi)
-let correctName = students[0].name;
-
-//redigerar "fel-namn-knappen". Sätter det namnet till student 1 (Alexander)
-falseNameEl.innerHTML = `
-<button name="${students[1].name}">${students[1].name}</button>
-`
-
-//"lyssnar" efter att anv. klickar på hemsidan
+//EVENTLISTENER: "lyssnar" efter att anv. klickar på hemsidan
 addEventListener('click', e => {
     //förhindrar att sidan laddas om (vilket är default-action för click-event)
 	e.preventDefault();
@@ -28,16 +14,17 @@ addEventListener('click', e => {
     //om så: hämta attributet name & spara i "clickedButton"
 	if (e.target.tagName === "BUTTON") {
         let clickedButton = e.target.getAttribute('name');
-        //om attributet name (sparat i "clickedButton") är samma som namnet Adi= namnet är rätt & innehållet i diven som håller img ändras till att visa bild på student på index 3= Benjamin)
-        if (clickedButton == correctName) {
+        //om attributet name (sparat i "clickedButton") är samma som random student namn= namnet är rätt & innehållet i diven som håller img ändras till att visa ny bild på random student image)
+        if (clickedButton == randomStudents[0].name) {
             alert("Right name!")
+            shuffleArrayOfStudents(randomStudents);
             imageContainerEl.innerHTML = `
-            <img src='${students[3].image}' class="img-fluid"></img>	
+            <img src='${randomStudents[0].image}' class="img-fluid"></img>	
             `
-            //även button med texten namn ändras till texten Benjamin
-            correctNameEl.innerHTML = `
-            <button name="${students[3].name}">${students[3].name}</button>
-            ` 
+            //även button med texten namn ändras till texten rätt namn
+            correctNameButtonEl.innerHTML = `
+            <button name="${randomStudents[0].name}">${randomStudents[0].name}</button>
+            `
         }
         else {
             alert("Wrong name");
@@ -47,12 +34,55 @@ addEventListener('click', e => {
     }
 });
 
+
+//-------New stuff 3 SHUFFLE OBJECTS------
+//MAP. skapar ny array av bara studenterna. visas som varje person inuti den ursprungliga arrayen
+const randomStudents = students.map(student => {
+    return student;
+});
+console.log(randomStudents); //visar lista med studenterna i random ordning, precis som nedan, rad 57. Hm...
+
+//----SHUFFLE-----Fisher-Yates algorith
+const shuffleArrayOfStudents = (array) => {
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		const temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+}
+shuffleArrayOfStudents(randomStudents);
+console.log("Shuffled student is: ", randomStudents[0]);//visar bara en student. en slumpad student
+//---------------------------------//
+console.log("shufflade studenter :", randomStudents);//visar hela "nya" arrayen med shufflade studenter
+
+
+//------REDIGERAR INNER-HTML för IMAGES--------//
+//redigerar vad som ska vara i diven och visas på hemsidan/som att redigera diven i index.html fast jag gör det här istället i Js. HÅRDKODA
+
+//diven som håller bild. redigerar den här:
+imageContainerEl.innerHTML = `
+<img src='${randomStudents[0].image}' class="img-fluid"></img>	
+`//visar den slumpade bilden currently at index 0 from images-array
+
+//diven som håller knapp med rätt namn. redigerar den här:
+//lägger till button med attribut som heter name och ger det värdet av studentens namn
+//+sätter knappens text till studentens namn också 
+correctNameButtonEl.innerHTML = `
+<button name="${randomStudents[0].name}">${randomStudents[0].name}</button>
+`
+//redigerar "fel-namn-knappen". Sätter det namnet till random student 1:s namn
+falseName1ButtonEl.innerHTML = `
+<button name="${randomStudents[1].name}">${randomStudents[1].name}</button>
+`
+
+
 //-------New stuff SHUFFLE NAMES------
 //MAP. skapar ny array av bara namnen. visas som varje persons namn inuti den ursprungliga arrayen
 const names = students.map(student => {
     return student.name;
 });
-console.log(names);
+console.log(names);//visar lista med bara namnen
 
 //----SHUFFLE-----Fisher-Yates algorith
 //Loopar genom arrayen: tar ett random item och byter det till ett annat 
@@ -65,44 +95,8 @@ const shuffleArrayOfNames = (array) => {
 	}
 }
 shuffleArrayOfNames(names);
-console.log("Shuffled names: ", names.join("\n"));
-
-
-
-//-------New stuff 2 SHUFFLE IMAGES------
-//MAP. skapar ny array av bara bilderna. visas som varje persons bild inuti den ursprungliga arrayen
-const images = students.map(student => {
-    return student.image;
-});
-console.log(images); //visar lista med bara bild-länkarna
-
-
-//----SHUFFLE-----Fisher-Yates algorith
-//Loopar genom arrayen: tar ett random item och byter det till ett annat 
-const shuffleArrayOfImages = (array) => {
-	for (let i = array.length - 1; i > 0; i--) {
-		const j = Math.floor(Math.random() * (i + 1));
-		const temp = array[i];
-		array[i] = array[j];
-		array[j] = temp;
-	}
-}
-shuffleArrayOfImages(images);
-console.log("Shuffled images-links: ", images.join("\n")); //visar hela "nya" arrayen med bild-länkar till alla bilder
-console.log("Shuffled image-link is: ", images[0]);//visar bara en bild. en slumpad bild.
-//---------------------------------//
-
-
-
-//------REDIGERAR INNER-HTML för IMAGES--------//
-//redigerar vad som ska vara i diven och visas på hemsidan/som att redigera diven i index.html fast jag gör det här istället i Js. HÅRDKODAT
-
-//diven som håller bild. redigerar den här:
-imageContainerEl.innerHTML = `
-<img src='${images[0]}' class="img-fluid"></img>	
-`//visar den slumpade bilden currently at index 0 from images-array
-
- 
+    //console.log("Shuffled names: ", names.join("\n"));//visar hela "nya" arrayen med alla namm
+    //console.log("Shuffled name is: ", names[0]);//visar bara ett namn. slumpat namn.
 
 
 
@@ -111,8 +105,7 @@ imageContainerEl.innerHTML = `
 
 
 
-
-
+/*
 
 //-----TEST FILTER OCH REDUCE-------
 
@@ -134,3 +127,6 @@ const totalLongNames = students.reduce((total, student) => {
 ///student=objektet student
 //total=respresenterar nuvarande värde när vi loppar genom varje person. placeholder för värdet som sen blir vårt slutgiltiga resultat.
 console.log(totalLongNames); //590
+*/
+
+
