@@ -53,3 +53,28 @@ addEventListener('click', e => {
     }
 });
 
+//-------New stuff------
+//MAP. skapar ny array av bara namnen. visas som varje persons namn inuti den ursprungliga arrayen
+const names = students.map(student => {
+    return student.name;
+});
+console.log(names);
+
+//TEST: FILTER: filtrerar ut namn längre än 18 tecken (mellansla ej inkluderat) ur den arrayen
+const longNames = students.filter(student => {
+    return student.name.length >18;
+}).map(student => {
+    return student.name;
+});
+
+console.log(longNames); //visar namnen över 18 tevken som hela objekt. 
+//när vi lägger till MAP i funtionen visas istället bara namnen på dom öber 8 tecken. 
+
+//TEST: REDUCE. reduce down the array to a singular value. Tex: lägga ihop längden a alla namn 
+//kommer köra igenom vraje item i min array (varje person) och
+const totalLongNames = students.reduce((total, student) => {
+    return total + student.name.length;
+}, 0); //börjar räkna på 0
+///student=objektet student
+//total=respresenterar nuvarande värde när vi loppar genom varje person. placeholder för värdet som sen blir vårt slutgiltiga resultat.
+console.log(totalLongNames); //590
