@@ -5,12 +5,6 @@ let correctNameEl = document.getElementById('correct-name');
 let falseNameEl = document.getElementById('false-name');
 
 
-//redigerar vad som ska vara i diven och visas på hemsidan/som att redigera diven i index.html fast jag gör det här istället i Js. HÅRDKODAT
-
-//diven som håller bild. redigerar den här:
-imageContainerEl.innerHTML = `
-<img src='${students[0].image}' class="img-fluid"></img>	
-`
 //diven som håller knapp med rätt namn. redigerar den här:
     //lägger till button med attribut som heter name och ger det värdet av studentens namn
     //+sätter knappens text till studentens namn också (Adi)
@@ -53,7 +47,7 @@ addEventListener('click', e => {
     }
 });
 
-//-------New stuff------
+//-------New stuff SHUFFLE NAMES------
 //MAP. skapar ny array av bara namnen. visas som varje persons namn inuti den ursprungliga arrayen
 const names = students.map(student => {
     return student.name;
@@ -62,7 +56,7 @@ console.log(names);
 
 //----SHUFFLE-----Fisher-Yates algorith
 //Loopar genom arrayen: tar ett random item och byter det till ett annat 
-const shuffleArray = (array) => {
+const shuffleArrayOfNames = (array) => {
 	for (let i = array.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
 		const temp = array[i];
@@ -70,8 +64,51 @@ const shuffleArray = (array) => {
 		array[j] = temp;
 	}
 }
-shuffleArray(names);
+shuffleArrayOfNames(names);
 console.log("Shuffled names: ", names.join("\n"));
+
+
+
+//-------New stuff 2 SHUFFLE IMAGES------
+//MAP. skapar ny array av bara bilderna. visas som varje persons bild inuti den ursprungliga arrayen
+const images = students.map(student => {
+    return student.image;
+});
+console.log(images); //visar lista med bara bild-länkarna
+
+
+//----SHUFFLE-----Fisher-Yates algorith
+//Loopar genom arrayen: tar ett random item och byter det till ett annat 
+const shuffleArrayOfImages = (array) => {
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		const temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+}
+shuffleArrayOfImages(images);
+console.log("Shuffled images-links: ", images.join("\n")); //visar hela "nya" arrayen med bild-länkar till alla bilder
+console.log("Shuffled image-link is: ", images[0]);//visar bara en bild. en slumpad bild.
+//---------------------------------//
+
+
+
+//------REDIGERAR INNER-HTML för IMAGES--------//
+//redigerar vad som ska vara i diven och visas på hemsidan/som att redigera diven i index.html fast jag gör det här istället i Js. HÅRDKODAT
+
+//diven som håller bild. redigerar den här:
+imageContainerEl.innerHTML = `
+<img src='${images[0]}' class="img-fluid"></img>	
+`//visar den slumpade bilden currently at index 0 from images-array
+
+ 
+
+
+
+
+
+
 
 
 
@@ -86,11 +123,11 @@ const longNames = students.filter(student => {
     return student.name;
 });
 
-console.log(longNames); //visar namnen över 18 tevken som hela objekt. 
-//när vi lägger till MAP i funtionen visas istället bara namnen på dom öber 8 tecken. 
+console.log(longNames); //visar namnen över 18 tecken som hela objekt. 
+//när vi lägger till MAP i funtionen visas istället bara namnen på dom över 8 tecken. 
 
-//TEST: REDUCE. reduce down the array to a singular value. Tex: lägga ihop längden a alla namn 
-//kommer köra igenom vraje item i min array (varje person) och
+//TEST: REDUCE. reduce down the array to a singular value. Tex: lägga ihop längden av alla namn 
+//kommer köra igenom varje item i min array (varje person) och
 const totalLongNames = students.reduce((total, student) => {
     return total + student.name.length;
 }, 0); //börjar räkna på 0
