@@ -60,6 +60,25 @@ const names = students.map(student => {
 });
 console.log(names);
 
+//----SHUFFLE-----Fisher-Yates algorith
+//Loopar genom arrayen: tar ett random item och byter det till ett annat 
+const shuffleArray = (array) => {
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		const temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+}
+shuffleArray(names);
+console.log("Shuffled names: ", names.join("\n"));
+
+
+
+
+
+//-----TEST FILTER OCH REDUCE-------
+
 //TEST: FILTER: filtrerar ut namn längre än 18 tecken (mellansla ej inkluderat) ur den arrayen
 const longNames = students.filter(student => {
     return student.name.length >18;
