@@ -1,46 +1,12 @@
 // hämtat diven #image-container. sparar den html-diven i en variabel i Js som heter imageContainerEl.
-//samma med correct name-button & false-name-button som båda ligger i varsin div i html:en. 
 let imageContainerEl = document.getElementById('image-container');
-let correctNameButtonEl = document.getElementById('correct-name');
-let falseName1ButtonEl = document.getElementById('false-name-1');
+let alternativesEl = document.getElementById('alternatives');
 
 
-//EVENTLISTENER: "lyssnar" efter att anv. klickar på hemsidan
-addEventListener('click', e => {
-    //förhindrar att sidan laddas om (vilket är default-action för click-event)
-	e.preventDefault();
-	
-    //kollar så anv. klickar på en knapp
-    //om så: hämta attributet name & spara i "clickedButton"
-	if (e.target.tagName === "BUTTON") {
-        let clickedButton = e.target.getAttribute('name');
-        //om attributet name (sparat i "clickedButton") är samma som random student namn= namnet är rätt & innehållet i diven som håller img ändras till att visa ny bild på random student image)
-        if (clickedButton == randomStudents[0].name) {
-            alert("Right name!")
-            shuffleArrayOfStudents(randomStudents);
-            imageContainerEl.innerHTML = `
-            <img src='${randomStudents[0].image}' class="img-fluid"></img>	
-            `
-            //även button med texten namn ändras till texten rätt namn
-            correctNameButtonEl.innerHTML = `
-            <button name="${randomStudents[0].name}">${randomStudents[0].name}</button>
-            `
-        }
-        else {
-            alert("Wrong name");
-        }
-	} else {
-        alert("You clicked on something wierd");
-    }
-});
-
-
-//-------New stuff 3 SHUFFLE OBJECTS------
-//MAP. skapar ny array av bara studenterna. visas som varje person inuti den ursprungliga arrayen
-const randomStudents = students.map(student => {
-    return student;
-});
-console.log(randomStudents); //visar lista med studenterna i random ordning, precis som nedan, rad 57. Hm...
+//----SHUFFLE OBJECTS - GETS LIST OF RANDOM STUDENTS---
+//Skapar en kopia på students-array: döper till randomStudents.ger den värdet av students-arrayen. skapar ny array av bara studenterna.  visas som varje person inuti den ursprungliga arrayen. Borde jag ha MAP här som innan?
+const randomStudents = students;
+console.log(randomStudents); //visar lista med studenterna i random ordning, precis som nedan, raden lite under. Hm...
 
 //----SHUFFLE-----Fisher-Yates algorith
 const shuffleArrayOfStudents = (array) => {
@@ -56,26 +22,81 @@ console.log("Shuffled student is: ", randomStudents[0]);//visar bara en student.
 //---------------------------------//
 console.log("shufflade studenter :", randomStudents);//visar hela "nya" arrayen med shufflade studenter
 
+//----SHUFFLE--4--OBJECTS/STUDENTS-ARRAY----
+//skapar ny array av 4 studenter(från index 0,1,2,3): sparar i "Alternatives". Visas bara 1a gången på sidan, innan click-eventet
+let alternatives = randomStudents.slice(0, 4);
+console.log(alternatives); //skriver ut 4 SHUFFLADE studenter i ordningen 0-4, dvs 0 är rätt och ligger först i knapparna
+shuffleArrayOfStudents(alternatives); //"Q". -shufflar 4 namnen / knapparna i hur de VISAR så de visas på olika platser första gången. (alltså att 0/rätt student imte är default på första knappen) 
 
-//------REDIGERAR INNER-HTML för IMAGES--------//
-//redigerar vad som ska vara i diven och visas på hemsidan/som att redigera diven i index.html fast jag gör det här istället i Js. HÅRDKODA
 
-//diven som håller bild. redigerar den här:
+//----REDIGERAR INNER_HTML för ALRTERNATIVES (4 BUTTONS)----
+//Loppar över min alternative-array och sätter den till att för varje loop skapa en knapp med varje alternatives/students namn på. Kommer skapa 4 knappar pga alternative-arrayen är 4 students/elements lång
+
+//för att slippa kopiera detta och lägga det i min click-funtion så gör jag en funktion av det:
+function displayButtons(alt) {
+    alternativesEl.innerHTML=""; //sätter den till att vara tom innan loopen börjar. Sen läggs innehåll till 4 gånger och skapar på så sätt 4 knappar
+    alt.forEach(element => {
+        alternativesEl.innerHTML += `
+        <button name="${element.name}">${element.name}</button>
+        `
+    });
+  }
+  displayButtons(alternatives); //visar 4 knappar i den random ordning jag skapade ovan i "Q"
+
+
+  //------REDIGERAR INNER-HTML för IMAGES--------//
 imageContainerEl.innerHTML = `
 <img src='${randomStudents[0].image}' class="img-fluid"></img>	
 `//visar den slumpade bilden currently at index 0 from images-array
 
-//diven som håller knapp med rätt namn. redigerar den här:
-//lägger till button med attribut som heter name och ger det värdet av studentens namn
-//+sätter knappens text till studentens namn också 
-correctNameButtonEl.innerHTML = `
-<button name="${randomStudents[0].name}">${randomStudents[0].name}</button>
-`
-//redigerar "fel-namn-knappen". Sätter det namnet till random student 1:s namn
-falseName1ButtonEl.innerHTML = `
-<button name="${randomStudents[1].name}">${randomStudents[1].name}</button>
-`
 
+//EVENTLISTENER: "lyssnar" efter att anv. klickar på hemsidan
+addEventListener('click', e => {
+    //förhindrar att sidan laddas om (vilket är default-action för click-event)
+	e.preventDefault();
+	
+    //kollar så anv. klickar på en knapp
+    //om så: hämta attributet name & spara i "clickedButton"
+	if (e.target.tagName === "BUTTON") {
+        let clickedButton = e.target.getAttribute('name');
+        //om attributet name (sparat i "clickedButton") är samma som random student namn= namnet är rätt & innehållet i diven som håller img ändras till att visa ny bild på random student image)
+        if (clickedButton == randomStudents[0].name) {
+            alert("Right name!")
+            
+            shuffleArrayOfStudents(randomStudents);//XY shufflar students objects
+            //-->sätter i image-containern ny bild 0
+            imageContainerEl.innerHTML = `
+            <img src='${randomStudents[0].image}' class="img-fluid"></img>	
+            `
+            
+            //XY uppdaterar alternatives-knapparna efter att de shufflats på nytt ovan så de inte är samma som första eller förra gången. nu kommer 0 i knapp/namn-arrayen att vara samma som 0 i images-arrayen ovan på XY-raden
+            alternatives = randomStudents.slice(0, 4);
+            
+            //nu vill jag också SHUFFLA KNAPPARNAS PLACERINGSORDNING
+            shuffleArrayOfStudents(alternatives); //shufflar 4 namnen-knapparna i hur de VISAR så de visas på olika platser första gången.
+            
+            //visar knapparna med funktionen som lägger in 4 nya namn
+            displayButtons(alternatives);
+        }
+        else {
+            alert("Wrong name");
+        }
+	} else {
+        alert("You clicked on something wierd");
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+/*
 
 //-------New stuff SHUFFLE NAMES------
 //MAP. skapar ny array av bara namnen. visas som varje persons namn inuti den ursprungliga arrayen
@@ -97,6 +118,12 @@ const shuffleArrayOfNames = (array) => {
 shuffleArrayOfNames(names);
     //console.log("Shuffled names: ", names.join("\n"));//visar hela "nya" arrayen med alla namm
     //console.log("Shuffled name is: ", names[0]);//visar bara ett namn. slumpat namn.
+
+*/
+
+
+
+
 
 
 
