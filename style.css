@@ -1,13 +1,43 @@
-#main-div {
+main {
     background-color: antiquewhite
 }
 
+.text-box {
+    margin: 1.5rem;
+}
+
 #image-container {
+    background-color: rgb(224, 193, 247);
+    margin:0.5rem;
+}
+
+button {
+    background-color: rgb(247, 245, 254);
+    margin: 0.5em;
+    width: 100%;
+   
+}
+#message {
     background-color: rgb(224, 193, 247)
 }
 
-/*.image-container {
-    text-align: center;
+
+/*Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) { 
 }
-*/
+
+/*Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) {
+    button {
+        width: 80%;
+    }
+}
+
+/*Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) { 
+    button {
+        width: 50%;
+    }
+}
+
 

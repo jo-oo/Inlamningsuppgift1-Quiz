@@ -16,16 +16,23 @@
 	<header>
 	</header>
 	<main>
-		<div id="main-div" class="container my-2 text-center"> 
+		<div id="main-div" class="container pt-3 pb-3 text-center"> 
 			<!--klassen container-har olika maxbredder. sätt den i vår div, uatnför row, så blir det mellanrum i margin. effektivt för att inte få allt i 100% bredd, så du ex kan få plats med menyer på sidorna-->
-			<!--marg-2 top+bot-->
-			<h1>QUIZZ</h1>
+			<!--pt-3 top padding-->
+			<div class="text-box">
+				<h1>QUIZ</h1>
 
-			<div id="image-container" class="col-12 image-container text-center">
+				<div id="score" class="md"></div>
+
+				<div id="message" class="md text-center"></div>
+			</div>
+	
+
+			<div id="image-container" class="md m-b-2 ml-2 m-r-2  image-container text-center">
 				<!--contains img in js-->
 			</div>
 
-			<div id="alternatives"></div>
+			<div id="alternatives" class="sm-column flex-wrap d-flex justify-content-center"></div>
 			<!--contains Buttons in js-->
 	
 		</div>
