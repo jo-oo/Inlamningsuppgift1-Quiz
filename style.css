@@ -1,34 +1,40 @@
-main {
+body {
     background-color: antiquewhite
+}
+
+button {
+    background-color: rgb(247, 245, 254);
+     margin: 0.5em;
+     width: 90%; 
 }
 
 .text-box {
     margin: 1.5rem;
 }
 
+#message {
+    background-color: rgb(224, 193, 247)
+    
+}
+
 #image-container {
-    background-color: rgb(224, 193, 247);
     margin:0.5rem;
 }
 
-button {
-    background-color: rgb(247, 245, 254);
-    margin: 0.5em;
-    width: 100%;
-   
-}
-#message {
-    background-color: rgb(224, 193, 247)
+#results {
+    margin-top: 3em;
+    margin-bottom: 3em;
 }
 
-
-/*Small devices (landscape phones, 576px and up)*/
-@media (min-width: 576px) { 
-}
 
 /*Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) {
     button {
+        width: 80%;
+    }
+
+    #message {
+        margin: auto;
         width: 80%;
     }
 }
@@ -36,6 +42,17 @@ button {
 /*Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) { 
     button {
+        width: 50%;
+    }
+
+    .text-box {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+    
+    #message {
+        margin: auto;
         width: 50%;
     }
 }

@@ -17,24 +17,20 @@
 	</header>
 	<main>
 		<div id="main-div" class="container pt-3 pb-3 text-center"> 
-			<!--klassen container-har olika maxbredder. sätt den i vår div, uatnför row, så blir det mellanrum i margin. effektivt för att inte få allt i 100% bredd, så du ex kan få plats med menyer på sidorna-->
-			<!--pt-3 top padding-->
 			<div class="text-box">
 				<h1>QUIZ</h1>
-
-				<div id="score" class="md"></div>
-
-				<div id="message" class="md text-center"></div>
+				<div id="score"></div>
+				<div id="message" class="text-center justify-content-center"></div>
 			</div>
-	
-
-			<div id="image-container" class="md m-b-2 ml-2 m-r-2  image-container text-center">
-				<!--contains img in js-->
+			<!--contains img-->
+			<div id="image-container" class="justify-content-center m-b-2 ml-2 m-r-2 image-container text-center">
 			</div>
-
-			<div id="alternatives" class="sm-column flex-wrap d-flex justify-content-center"></div>
-			<!--contains Buttons in js-->
-	
+			<!--contains 4 Buttons-->
+			<div id="alternatives" class="justify-content-center text-center"></div>
+			<!--contains result list, with img and texts-->
+			<div id="results" class="justify-content-center"></div>
+			<!--contains result of correct names-->
+			<div id="correctResults"></div>
 		</div>
 	</main>
 	<script src="students/students.js"></script>
