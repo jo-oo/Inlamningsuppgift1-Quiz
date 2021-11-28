@@ -7,7 +7,6 @@ let scoreEl = document.getElementById('score');
 let resultsEl = document.getElementById('results');
 let correctResultsEl = document.getElementById('correctResults');
 
-
 //map new array with one added property named "hasOccured"
 const randomStudents = students.map(student => {
     student.hasOccured=false; 
@@ -26,18 +25,13 @@ const shuffleArrayOfStudents = (array) => {
 shuffleArrayOfStudents(randomStudents); //shuffles randomStudents array
 console.log("Shuffled student is: ", randomStudents[0]);//visar bara en student. en slumpad student
 randomStudents[0].hasOccured=true;
-//---------------------------------//
-console.log("shufflade studenter :", randomStudents);//visar hela "nya" arrayen med shufflade studenter
 
-//----SHUFFLE--4--OBJECTS/STUDENTS-ARRAY----
-//skapar ny array av 4 studenter(från index 0,1,2,3). Visas bara 1a gången på sidan, innan click-eventet
+//Creates new array of 4 students (from index 0-3) of the shuffled students array
 let alternatives = randomStudents.slice(0, 4);
-console.log(alternatives); //skriver ut 4 SHUFFLADE studenter i ordningen 0-4, dvs 0 är rätt och ligger först i knapparna
-shuffleArrayOfStudents(alternatives); //-shufflar 4 namnen / knapparna i hur de VISAR så de visas på olika platser första gången. 
+//shuffles the 4 students in the new short array of 4 students
+shuffleArrayOfStudents(alternatives);
 
-
-//----REDIGERAR INNER_HTML för ALRTERNATIVES (4 BUTTONS)----
-//Loppar över min alternative-array med 4 studenter: för varje loop skapas en knapp med varje alternatives/students namn på. = 4 knappar skapas
+/*function: print content to 4 buttons by iterating through the array of shuffled 4 students. Prints 4 names: 1 name on each button*/
 function displayButtons(alt) {
     alternativesEl.innerHTML=""; //empty before loop
     alt.forEach(element => {
@@ -46,83 +40,72 @@ function displayButtons(alt) {
         `
     });
   }
-  displayButtons(alternatives); //visar 4 knappar i random ordning
+//calls the function and 4 buttons are created
+displayButtons(alternatives);
 
-//------REDIGERAR INNER-HTML för IMAGES--------//
+//sets the imageContainer in html to contain image of random student currently at index 0 at randomStudents-array
 imageContainerEl.innerHTML = `
 <img src='${randomStudents[0].image}' class="img-fluid"></img>	
-`//shows random image currently at index 0 from randomStudents-array
+`
 
-
-//creates new question with new image and adds 4 new buttons through the displayButtons-function
+//function that creates new question with new image and adds 4 new buttons through the displayButtons-function
 const newQuestion = () =>{
-    shuffleArrayOfStudents(randomStudents);//shuffles students
-    
+    shuffleArrayOfStudents(randomStudents);
+    //while random student at position 0 has already occured in the game: a new shuffle is made of the list
     while(randomStudents[0].hasOccured){
         shuffleArrayOfStudents(randomStudents);
     }
-    
-
+    //sets the image-container to contain image of random student at index 0
     imageContainerEl.innerHTML = `
     <img src='${randomStudents[0].image}' class="img-fluid"></img>	
     `
-    randomStudents[0].hasOccured=true;
-    console.log(randomStudents);
-    //creates list of 4 alternatives to equal randomStudent att index 0-3. Button [0] is same as image [0] and so on
+    //sets that student to now have occured in the game
+    randomStudents[0].hasOccured=true; 
+    //creates new list of 4 shuffled students from index position 0-3 of randomStudents-array
     alternatives = randomStudents.slice(0, 4);
-    //shuffle the alternatives-array so the placement is random
+    //shuffle the alternatives-array so the placement will be random when creating the buttons
     shuffleArrayOfStudents(alternatives);
     //calls the function that creates 4 new buttons
     displayButtons(alternatives);
 }
 
-
-//-----COUNTER -----
+//sets variables for score
 let correctAnswers = 0; //amount of correct answers user has
 let totalScore = 0; //max amount of questions
 let highScore = 0; //highscore is 0 at first
 let continueGame = true;
-//------------------------------------------------
 
-
-//Highscore-function
-const newHighscore = () =>{
-    //new high score?
-      if (correctAnswers > highScore) {
+//High Score-function
+const newHighscore = () => {
+    if (correctAnswers > highScore) {
           highScore = correctAnswers;
-          console.log("YAY new High SCORE! High score is now " + highScore);
-      } else {
-          console.log("Sorry, no new highscore. Your current highscore is " + highScore);
-      }
-  }
-    /*  else {
-      highScore = totalScore;
-  }*/
-
+    } 
+}
 
 //List showed att end with users results
 let results = [] 
 
+//function to display result list when game is finished
 function displayResult(results) {
-    //filters not corrct answers
-    let notCorrectAnswers = results.filter(result => !result.correctAnswers );
-
+    //filters out users answers that are not correct
+    let notCorrectAnswers = results.filter(result => !result.correctAnswers);
+    //filters out users answers that are correct
     let correctAnswers = results.filter(result => result.correctAnswers);
-    //Show wrong results with image and name
-        if (notCorrectAnswers.length != 0){
-            resultsEl.innerHTML += '<h2>You need to practice these:</h2><br/>'
-        }
-   
-            notCorrectAnswers.forEach(element => {
-                resultsEl.innerHTML += `
-                <img src='${element.image}' class="img-fluid"></img> <p> You guessed : ${element.youGuessed} <br/> Correct answer was: ${element.correct}</p>
-               `
-            });
-
-        //shows right result in text
+    //sets headline to list of students user guessed wrong, if there is any.
+    if (notCorrectAnswers.length != 0){
+        resultsEl.innerHTML += '<h2>You need to practice these:</h2><br/>'
+    }
+        //Shows list of students user guessed wrong (img and name)Also showing the name of the student user guessed on for each question
+        notCorrectAnswers.forEach(element => {
+        resultsEl.innerHTML += `
+        <img src='${element.image}' class="img-fluid"></img> <p> You guessed : ${element.youGuessed} <br/> Correct answer was: ${element.correct}</p>
+        `
+    });
+    //sets headline to list of students user guessed right, if there is any.
     if (correctAnswers.length != 0){
         correctResultsEl.innerHTML += '<h2>You know these ones:</h2><br/>'
     }
+        //Shows list of students user guessed right, by name   
         correctAnswers.forEach(element => {
             correctResultsEl.innerHTML += `
             <p>${element.youGuessed}</p>
@@ -137,63 +120,57 @@ addEventListener('click', e => {
         //if user clicked a button - get attribute "name" and save in "clickedButton"    
 	    if (e.target.tagName === "BUTTON") {
             let clickedButton = e.target.getAttribute('name');
-           
-            //if user clicks "Play again-button"-> 
+            //if user clicks "Play again-button"
            if(e.target.getAttribute("type") === "playagain"){
                 totalScore = 0; 
-                results.length = 0; // resets results-array.
-                //empties div´s
+                results.length = 0;
                 scoreEl.innerHTML = ""; 
                 messageEl.innerHTML = ""; 
                 correctResultsEl.innerHTML = "";
                 resultsEl.innerHTML = "";
-                //sets random students propertu "hasOccured" to be false again
+                //sets random students property "hasOccured" to be false
                 const randomStudents = students.map(student => {
                     student.hasOccured=false; 
                     return student;
                 });
             }
-
-            //if clicked name equals RandomStudents[0] name, name is correct. I& innehållet i diven som håller img ändras till att visa ny bild på random student image)
+            //if clicked name equals RandomStudents[0] name, name is correct.
             if (clickedButton == randomStudents[0].name) { 
-                correctAnswers++;
-                totalScore++;
+                correctAnswers++; //users score is updated
+                totalScore++; //updates rounds played
                 scoreEl.innerHTML = `
                 <p>Score: ${correctAnswers} / ${totalScore}</p>	
                 `
                 messageEl.innerHTML = `
                 <p>Right name! You guessed: ${clickedButton}</p>
                 `
+                //creates object with properties youGuessed, correct, image and correctAnswers
                 let thisResult = {youGuessed: clickedButton, correct: randomStudents[0].name, image:randomStudents[0].image, correctAnswers: true}
                 results.push(thisResult);
-                console.log(results);
             }   
-            
+            //if user clickss on button with any of the other 3 students name:
             else if (clickedButton == randomStudents[1].name ||       clickedButton == randomStudents[2].name || clickedButton == randomStudents[3].name){
-                totalScore++;
-               // totalScore = totalScore + correctAnswers;
-                console.log("Total score is: ", totalScore);
+                totalScore++; //updates rounds played
                 scoreEl.innerHTML = `
                 <p>Score: ${correctAnswers} / ${totalScore}</p>	
                 `
-                //UPPDTAERAR VAD MAN GISSAT PÅ
                 messageEl.innerHTML = `
-                <p>Wrong name! <br/> You guessed: ${clickedButton}. <br/>  Right name was: ${randomStudents[0].name}  </p>
-                `      
+                <p>Wrong name!<br/>You guessed: ${clickedButton}.<br/>  Right name was: ${randomStudents[0].name}</p>
+                `
+                //creates object with properties youGuessed, correct, image and correctAnswers      
                 let thisResult = {youGuessed: clickedButton, correct: randomStudents[0].name, image:randomStudents[0].image, correctAnswers: false}
                 results.push(thisResult);
                 console.log(results);
             }  
-            
             //prevents new image and buttons to appear after last round is played
-            if(totalScore <= 3){
+            if(totalScore <= 10){
                 newQuestion();
             }
-         
-            //sets game to equal 3 rounds
-            if(totalScore === 3){
-                newHighscore(); //checks if new Highscore
-                messageEl.innerHTML = `<p>You got ${correctAnswers} right out of ${totalScore} </br>Your HIGHSCORE is ${highScore}</p> 
+            //sets game to equal 10 rounds
+            if(totalScore === 10){
+                //checks if new high score
+                newHighscore(); 
+                messageEl.innerHTML = `<p>You got ${correctAnswers} right out of ${totalScore}</br>Your highscore is ${highScore}</p> 
                 <button type="playagain">Play again</button>
                 ` 
                 correctAnswers = 0;

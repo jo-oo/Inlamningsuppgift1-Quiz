@@ -13,8 +13,7 @@ button {
 }
 
 #message {
-    background-color: rgb(224, 193, 247)
-    
+    background-color: rgb(224, 193, 247);
 }
 
 #image-container {
@@ -30,7 +29,7 @@ button {
 /*Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) {
     button {
-        width: 80%;
+        width: 70%;
     }
 
     #message {
@@ -42,7 +41,12 @@ button {
 /*Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) { 
     button {
-        width: 50%;
+        margin: auto;
+        width: 45%;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        display: flex;
+        justify-content: space-evenly;
     }
 
     .text-box {
